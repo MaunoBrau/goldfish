@@ -21,13 +21,20 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIO-tE-gog" userLabel="Current Filter">
+                                <rect key="frame" x="346" y="30" width="19" height="36"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xt2-xI-ISI">
                                 <rect key="frame" x="111.5" y="621" width="151" height="36"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 <state key="normal" title="Next Filter">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="eventNextFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dql-Kb-nRy"/>
@@ -36,10 +43,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Cyt-AP-7OC" firstAttribute="trailing" secondItem="NIO-tE-gog" secondAttribute="trailing" constant="10" id="1jS-Qc-KV8"/>
                             <constraint firstItem="3nB-kG-W6i" firstAttribute="leading" secondItem="Cyt-AP-7OC" secondAttribute="leading" id="8kS-2q-M9G"/>
                             <constraint firstItem="Cyt-AP-7OC" firstAttribute="bottom" secondItem="Xt2-xI-ISI" secondAttribute="bottom" constant="10" id="Gat-M0-Uu6"/>
                             <constraint firstItem="3nB-kG-W6i" firstAttribute="top" secondItem="Cyt-AP-7OC" secondAttribute="top" id="HbC-vA-jYv"/>
                             <constraint firstItem="Xt2-xI-ISI" firstAttribute="centerX" secondItem="Cyt-AP-7OC" secondAttribute="centerX" id="Maj-Gw-Rtj"/>
+                            <constraint firstItem="NIO-tE-gog" firstAttribute="top" secondItem="Cyt-AP-7OC" secondAttribute="top" constant="10" id="vTB-3y-cEn"/>
                             <constraint firstItem="Cyt-AP-7OC" firstAttribute="bottom" secondItem="3nB-kG-W6i" secondAttribute="bottom" id="wDa-qI-MoO"/>
                             <constraint firstItem="Cyt-AP-7OC" firstAttribute="trailing" secondItem="3nB-kG-W6i" secondAttribute="trailing" id="xtX-mK-dPV"/>
                         </constraints>
@@ -47,6 +56,7 @@
                     </view>
                     <connections>
                         <outlet property="cameraView" destination="3nB-kG-W6i" id="Wva-MZ-x61"/>
+                        <outlet property="currentFilterLabel" destination="NIO-tE-gog" id="Pco-Cp-58s"/>
                         <outlet property="view" destination="8bC-Xf-vdC" id="970-Cx-KYb"/>
                     </connections>
                 </viewController>
