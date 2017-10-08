@@ -14,7 +14,9 @@
 @property (nonatomic, strong) IBOutlet GPUImageView *cameraView;
 
 @property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
-@property (nonatomic, strong) GPUImageFilter *customFilter;
+
+@property (nonatomic, strong) NSMutableArray<GPUImageFilter *> *filters;
+@property (nonatomic) int currentFilter;
 
 @end
 
@@ -32,12 +34,20 @@
     _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
     _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
     
-    //Create image filter
-    _customFilter = [[GPUImageGrayscaleFilter alloc] init];
-    
-    //Hook up outputs to targets - camera->filter->view
-    [_videoCamera addTarget:_customFilter];
-    [_customFilter addTarget:self.cameraView];
+    //Create image filters
+    _filters = [NSMutableArray array];
+    GPUImageFilter *newFilter = [[GPUImageGrayscaleFilter alloc] init];
+    [_filters addObject:newFilter];
+    newFilter = [[GPUImageToonFilter alloc] init];
+    [_filters addObject:newFilter];
+    newFilter = [[GPUImageHazeFilter alloc] init];
+    [_filters addObject:newFilter];
+    newFilter = [[GPUImageSepiaFilter alloc] init];
+    [_filters addObject:newFilter];
+    newFilter = [[GPUImageEmbossFilter alloc] init];
+    [_filters addObject:newFilter];
+
+    [self setFilter:0];
     
     //Start the camera
     [_videoCamera startCameraCapture];
@@ -48,5 +58,28 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)setFilter:(int)filterIndex {
+    //Unhook previous filter
+    if (_currentFilter >= 0 && [_filters objectAtIndex:_currentFilter]) {
+        GPUImageFilter *filter = [_filters objectAtIndex:_currentFilter];
+        [_videoCamera removeAllTargets];
+        [filter removeAllTargets];
+    }
+    
+    //Hook up new filter
+    _currentFilter = filterIndex;
+    GPUImageFilter *filter = [_filters objectAtIndex:_currentFilter];
+    [_videoCamera addTarget:filter];
+    [filter addTarget:self.cameraView];
+}
+
+- (IBAction)eventNextFilter:(UIButton *)sender {
+    _currentFilter++;
+    if (_currentFilter >= _filters.count) {
+        _currentFilter = 0;
+    }
+    
+    [self setFilter:_currentFilter];
+}
 
 @end
