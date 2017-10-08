@@ -12,6 +12,7 @@
 @interface ViewController ()
 
 @property (nonatomic, strong) IBOutlet GPUImageView *cameraView;
+@property (nonatomic, strong) IBOutlet UILabel *currentFilterLabel;
 
 @property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
 
@@ -31,7 +32,7 @@
     [super viewDidLoad];
     
     //Set up camera
-    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
+    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh cameraPosition:AVCaptureDevicePositionBack];
     _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
     
     //Create image filters
@@ -47,7 +48,7 @@
     newFilter = [[GPUImageEmbossFilter alloc] init];
     [_filters addObject:newFilter];
 
-    [self setFilter:0];
+    [self setFilter:-1];
     
     //Start the camera
     [_videoCamera startCameraCapture];
@@ -60,23 +61,31 @@
 
 - (void)setFilter:(int)filterIndex {
     //Unhook previous filter
+    [_videoCamera removeAllTargets];
     if (_currentFilter >= 0 && [_filters objectAtIndex:_currentFilter]) {
         GPUImageFilter *filter = [_filters objectAtIndex:_currentFilter];
-        [_videoCamera removeAllTargets];
         [filter removeAllTargets];
     }
     
     //Hook up new filter
     _currentFilter = filterIndex;
-    GPUImageFilter *filter = [_filters objectAtIndex:_currentFilter];
-    [_videoCamera addTarget:filter];
-    [filter addTarget:self.cameraView];
+    if (_currentFilter >= 0) {
+        GPUImageFilter *filter = [_filters objectAtIndex:_currentFilter];
+        [_videoCamera addTarget:filter];
+        [filter addTarget:self.cameraView];
+    } else {
+        [_videoCamera addTarget:self.cameraView];
+    }
+    
+    if (_currentFilterLabel != nil) {
+        _currentFilterLabel.text = [@(_currentFilter) stringValue];
+    }
 }
 
 - (IBAction)eventNextFilter:(UIButton *)sender {
     _currentFilter++;
     if (_currentFilter >= _filters.count) {
-        _currentFilter = 0;
+        _currentFilter = -1;
     }
     
     [self setFilter:_currentFilter];
